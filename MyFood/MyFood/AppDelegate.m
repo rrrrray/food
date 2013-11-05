@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-
-#import "ViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import "MainViewController.h"   
 
 @implementation AppDelegate
 
@@ -18,9 +18,9 @@
     
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPhone" bundle:nil];
+        self.viewController = [[MainViewController alloc] initWithNibName:@"IPhoneMainView" bundle:nil];
     } else {
-        self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPad" bundle:nil];
+        self.viewController = [[MainViewController alloc] initWithNibName:@"IPadMainView" bundle:nil];
     }
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
@@ -54,4 +54,69 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+
+@end
+
+
+
+@implementation UIView(MyFoods)
+-(void)addBorder:(CGFloat)width colour:(UIColor *)colour {
+    self.layer.borderColor = colour.CGColor;
+    self.layer.borderWidth = width;
+}
+-(void)roundCorners:(CGFloat)cornerRadius {
+    self.layer.cornerRadius = cornerRadius;
+}
+-(void)setX:(CGFloat)x {
+    CGRect f = self.frame;
+    f.origin.x = x;
+    self.frame = f;
+}
+-(void)setY:(CGFloat)y {
+    CGRect f = self.frame;
+    f.origin.y = y;
+    self.frame = f;
+}
+-(void)centerInView:(UIView *)view {
+    CGRect f = self.frame;
+    f.origin.x = [view width]/2 - [self width]/2;
+    f.origin.y = [view height]/2 - [self height]/2;
+    self.frame = f;
+}
+-(CGFloat)width {
+    return self.frame.size.width;
+}
+-(CGFloat)height {
+    return self.frame.size.height;
+}
+-(void)add:(UIView*)view {
+    [self addSubview:view];
+}
+-(void)highlight {
+    
+}
+-(void)unhighlight {
+    
+}
+@end
+
+
+@implementation MenuIcon
+-(void)awakeFromNib {
+    [self roundCorners:4.0];
+}
+@end
+
+
+@implementation Util
+
++(UIColor*)defaultBorderColour {
+    return [UIColor colorWithWhite:252.0/255.0 alpha:1.0];
+}
+
++(UIView*)viewFromNib:(NSString*)nibName {
+    NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
+    UIView *nibView = [nibObjects objectAtIndex:0];
+    return nibView;
+}
 @end
